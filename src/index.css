@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-primary: #138808;
+  --color-secondary: #FF9933;
+  --color-dark: #0F2942;
+  --color-gov-navy: #0F2942;
+  --color-gov-blue: #1E3A8A;
+  --color-gov-saffron: #FF9933;
+  --color-gov-green: #138808;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-100 text-slate-800 m-0 font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-slate-900 tracking-tight;
+  }
+}
+
+/* Authentic Indian Tricolor Ribbon */
+.tricolor-ribbon {
+  height: 4px;
+  background: linear-gradient(
+    to right, 
+    #FF9933 0%, 
+    #FF9933 33.33%, 
+    #FFFFFF 33.33%, 
+    #FFFFFF 66.66%, 
+    #138808 66.66%, 
+    #138808 100%
+  );
+  width: 100%;
+}
+
+/* Government Card Styling */
+.gov-card {
+  @apply bg-white border border-slate-200 rounded-lg shadow-sm transition-all;
+}
+
+.gov-card-header {
+  @apply px-4 py-3 border-b border-slate-100 bg-slate-50/75 flex items-center justify-between font-semibold text-slate-800;
+}
+
+/* Marquee Warning Animation */
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
