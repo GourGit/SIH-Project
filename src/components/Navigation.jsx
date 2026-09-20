@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  Home, ThermometerSun, CalendarDays, PieChart, 
+import {
+  Home, ThermometerSun, CalendarDays, PieChart,
   Map as MapIcon, Users, ChevronRight
 } from 'lucide-react';
 
@@ -24,10 +24,9 @@ const Navigation = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center space-x-2 px-4 py-3 text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap transition-all border-b-2 ${
-                  isActive 
-                    ? 'border-orange-400 text-white bg-slate-800/80' 
-                    : 'border-transparent text-slate-300 hover:text-white hover:bg-slate-800/40'
+                `flex items-center space-x-2 px-4 py-3 text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap transition-all border-b-2 ${isActive
+                  ? 'border-orange-400 text-white bg-slate-800/80'
+                  : 'border-transparent text-slate-300 hover:text-white hover:bg-slate-800/40'
                 }`
               }
             >
