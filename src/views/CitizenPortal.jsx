@@ -25,12 +25,7 @@ const SCOUT_LEVELS = [
   { level: 3, title: 'Certified Reporter',   minPts: 2500, maxPts: 99999,badge: 'bg-amber-50 text-amber-800' },
 ];
 
-const SAMPLE_FEED = [
-  { id: 'f1', type: 'flooding',     location: 'Salt Lake, Kolkata', time: '8m ago',   verified: true },
-  { id: 'f2', type: 'waterlogging', location: 'Dadar, Mumbai',      time: '23m ago',  verified: true },
-  { id: 'f3', type: 'cyclone',      location: 'Marine Drive, Kochi',time: '41m ago',  verified: true },
-  { id: 'f4', type: 'heavy_rain',   location: 'Banjara Hills, Hyd', time: '1h ago',   verified: false },
-];
+const SAMPLE_FEED = [];
 
 const VERIFY_STEPS = ['Capture & Geo-Tag Location', 'IMD Radar & Telemetry Cross-Audit', 'Official Incident Verified', 'National Points Credited'];
 
@@ -62,6 +57,7 @@ const CitizenPortal = () => {
   const [description, setDescription] = useState('');
   const [verifyStep, setVerifyStep]   = useState(0);
   const [awardedPts, setAwardedPts]   = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
   const fileRef = useRef(null);
 
   useEffect(() => {
@@ -446,15 +442,27 @@ const CitizenPortal = () => {
                     </label>
                     <textarea
                       value={description}
-                      onChange={e => setDescription(e.target.value)}
+                      onChange={e => { setDescription(e.target.value); setErrorMessage(''); }}
                       rows={2}
                       className="w-full bg-slate-50 border border-slate-300 rounded p-2 text-xs text-slate-800 focus:outline-none focus:border-[#1E3A8A] resize-none"
                       placeholder="e.g. 2 feet waterlogging near metro station..."
                     />
                   </div>
 
+                  {errorMessage && (
+                    <div className="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-200">
+                      {errorMessage}
+                    </div>
+                  )}
+
                   <button 
-                    onClick={handleSubmit} 
+                    onClick={() => {
+                      if (description.length < 5) {
+                        setErrorMessage('Please provide a more detailed description (at least 5 characters).');
+                        return;
+                      }
+                      handleSubmit();
+                    }} 
                     disabled={!eventType} 
                     className="w-full py-2 bg-[#138808] hover:bg-green-800 text-white disabled:opacity-50 rounded text-xs font-semibold flex justify-center items-center gap-1.5"
                   >

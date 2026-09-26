@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { STATIONS } from '../services/weatherData';
 import { 
   Map, Thermometer, Droplets, Wind, MapPin, 
@@ -56,12 +56,21 @@ const LiveWeather = () => {
     return () => clearInterval(interval);
   }, [stations]);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const query = searchParams.get('q');
+    if (query) {
+      setSearchQuery(query);
+      executeSearch(query);
+    }
+  }, [searchParams]);
+
+  const executeSearch = async (query) => {
+    if (!query.trim()) return;
     setSearchLoading(true);
     try {
-      const geoRes = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1&countrycodes=in`);
+      const geoRes = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&countrycodes=in`);
       if (geoRes.data && geoRes.data.length > 0) {
         const result = geoRes.data[0];
         const newId = `STN-${result.name.toUpperCase().replace(/\s/g, '')}-${Math.floor(Math.random()*1000)}`;
@@ -73,7 +82,7 @@ const LiveWeather = () => {
           lng: parseFloat(result.lon),
           windDir: 'N/A'
         };
-        setStations([newStation, ...stations]);
+        setStations(prev => [newStation, ...prev]);
         setSearchQuery('');
       } else {
         alert("Location not found. Please try again.");
@@ -84,6 +93,11 @@ const LiveWeather = () => {
     } finally {
       setSearchLoading(false);
     }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    executeSearch(searchQuery);
   };
 
   const statesList = ['All', ...new Set(stations.map(s => s.state))];

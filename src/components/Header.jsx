@@ -110,15 +110,53 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Language Selector */}
+            {/* Hidden Google Translate Widget (Must remain in DOM and not be display:none) */}
+            <div id="google_translate_element" style={{ position: 'absolute', top: '-9999px', left: '-9999px', opacity: 0, zIndex: -1 }}></div>
+            
+            {/* Custom Language Selector */}
             <select 
-              defaultValue="en"
-              className="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded px-1.5 py-0.5 outline-none cursor-pointer hover:border-slate-600"
+              defaultValue={() => {
+                // Try to extract language from googtrans cookie
+                const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
+                return match ? match[1] : 'en';
+              }}
+              onChange={(e) => {
+                const lang = e.target.value;
+                
+                // 1. First, try the seamless DOM approach (works if Google Translate fully initialized)
+                const gtSelect = document.querySelector('.goog-te-combo');
+                if (gtSelect) {
+                  gtSelect.value = lang;
+                  gtSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+                }
+
+                // 2. Set the official Google Translate cookie as a highly reliable fallback
+                // This ensures that even on a fresh load or navigation, the language is preserved.
+                document.cookie = `googtrans=/en/${lang}; path=/`;
+                if (window.location.hostname !== 'localhost') {
+                  document.cookie = `googtrans=/en/${lang}; domain=.${window.location.hostname}; path=/`;
+                }
+
+                // 3. Force a reload to guarantee the translation applies if the DOM method failed
+                // Give the DOM method a tiny fraction of a second to work first.
+                setTimeout(() => {
+                   window.location.reload();
+                }, 300);
+              }}
+              className="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded px-1.5 py-0.5 outline-none cursor-pointer hover:border-slate-600 min-w-[90px]"
             >
               <option value="en">English</option>
               <option value="hi">हिन्दी</option>
               <option value="bn">বাংলা</option>
               <option value="ta">தமிழ்</option>
+              <option value="te">తెలుగు</option>
+              <option value="mr">मराठी</option>
+              <option value="gu">ગુજરાતી</option>
+              <option value="ur">اردو</option>
+              <option value="kn">ಕನ್ನಡ</option>
+              <option value="ml">മലയാളം</option>
+              <option value="pa">ਪੰਜਾਬੀ</option>
+              <option value="or">ଓଡ଼ିଆ</option>
             </select>
           </div>
         </div>

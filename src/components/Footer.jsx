@@ -85,11 +85,13 @@ const Footer = () => {
           {/* Col 1: Platform Identification (5 cols) */}
           <div className="lg:col-span-5 space-y-3">
             <div className="flex items-center space-x-3">
-              <img 
-                src={logo} 
-                alt="Government Emblem" 
-                className="h-12 w-12 object-contain bg-white rounded p-0.5 border border-slate-700" 
-              />
+              <Link to="/">
+                <img 
+                  src={logo} 
+                  alt="Government Emblem" 
+                  className="h-12 w-12 object-contain bg-white rounded p-0.5 border border-slate-700 hover:opacity-80 transition-opacity" 
+                />
+              </Link>
               <div>
                 <h3 className="text-sm sm:text-base font-bold text-white tracking-tight leading-tight">
                   National Weather Big Data Analytics Platform

@@ -14,7 +14,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-100 text-slate-800 m-0 font-sans antialiased;
+    @apply bg-slate-100 text-slate-800 m-0 font-sans antialiased overflow-x-hidden;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold text-slate-900 tracking-tight;
@@ -59,4 +59,20 @@
 
 .animate-ticker:hover {
   animation-play-state: paused;
+}
+
+/* Google Translate Widget Customization */
+.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+/* Ensure tooltip iframe is hidden */
+#goog-gt-tt, .goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
 }
